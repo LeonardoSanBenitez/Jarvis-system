@@ -58,7 +58,18 @@ if __name__ == "__main__":
             frame = camera.captureFrame()
         print(frame.shape)
         print(frame.mean())
+
+        # Face detection
+        gray = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
+        objects = cascade.detectMultiScale(gray, 1.3, 5)
         
+        # Draw rectangle around the faces
+        for (x, y, w, h) in faces:
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255), 4)
+            crop = frame[y:y+h, x:x+w,:]
+            #send crop to server
+        
+        # Local save
         cv2.imwrite('tempImgs/img' + str(i) + '.jpg', frame)
         print('saved ', i, 'image')
         i+=1
@@ -66,9 +77,7 @@ if __name__ == "__main__":
         # Sensors
         #print(bme280.readBME280All())
 
-        # Image "machine learning"
-        #gray = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
-        #objects = cascade.detectMultiScale(gray, 1.3, 5)
+
         #print(objects)
 
         print('---------')
